@@ -927,27 +927,27 @@ Sub CreateSendDoc()
 	Application.DisplayAlerts = True
 End Sub
 
-' ---Format As For Reference Card Macro - Stable Edition - v1.0.1---
-' Updated on 2024-08-21.
+' ---Format As For Reference Card Macro - Stable Edition - v1.0.2---
+' Updated on 2024-09-01.
 ' https://github.com/KSXia/Verbatim-Format-As-For-Reference-Card-Macro---Stable-Edition
 ' Thanks to Truf for creating and providing his "ForReference" macro, which this macro is partly based upon! You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
 Sub FormatAsForReferenceCard()
-	' Check if any text is selected
+	' Check if any text is selected.
 	If Selection.Type = wdSelectionIP Then
 		MsgBox "You have not selected any text." & vbNewLine & "Please select the text you want" & vbNewLine & "to format as a ""For Reference"" card.", Title:="Error in Formatting as" & vbNewLine & "a ""For Reference"" Card"
         Exit Sub
 	End If
 	
-	Dim SelectedText As Range
-	Set SelectedText = Selection.Range
+	Dim SelectionRange As Range
+	Set SelectionRange = Selection.Range
 	
 	Dim Character As Range
 	
-	' Loop through each character in the selected text
-	For Each Character In SelectedText.Characters
-		' Check if the character is highlighted
+	' Loop through each character in the selected text.
+	For Each Character In SelectionRange.Characters
+		' Check if the character is highlighted.
 		If Character.HighlightColorIndex <> wdNoHighlight Then
-			' If the character is highlighted, change the highlight color to light gray
+			' If the character is highlighted, change the highlight color to light gray.
 			Character.HighlightColorIndex = wdGray25
 		End If
 	Next Character

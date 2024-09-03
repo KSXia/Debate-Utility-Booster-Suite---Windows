@@ -130,8 +130,8 @@ Sub StandardizeHighlightingWithExceptions()
 	Application.DisplayAlerts = True
 End Sub
 
-' ---Argument Numberer v1.0.1---
-' Updated on 2024-08-21.
+' ---Argument Numberer v1.0.2---
+' Updated on 2024-09-03.
 ' https://github.com/KSXia/Verbatim-Argument-Numberer/
 ' Based on Verbatim 6.0.0's "AutoNumberTags" function.
 Sub NumberArguments()
@@ -166,7 +166,7 @@ Sub NumberArguments()
 	
 	' ---PROCESS TO NUMBER ARGUMENTS---
 	' Loop through each paragraph and insert the number if the numbering template is present at the start of the paragraph.
-	' Reset the numbering on any specified larger heading
+	' Reset the numbering on any specified larger heading.
 	For Each p In ActiveDocument.Paragraphs
 		Select Case p.OutlineLevel
 			Case Is = 1

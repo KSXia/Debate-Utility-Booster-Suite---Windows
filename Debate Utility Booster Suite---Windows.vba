@@ -1,5 +1,5 @@
-' ===Debate Utility Booster Suite - Windows - v1.1.0===
-' Created on 2024-09-01.
+' ===Debate Utility Booster Suite - Windows - v1.1.1==
+' Updated on 2024-09-03.
 ' https://github.com/KSXia/Debate-Utility-Booster-Suite---Windows
 ' Thanks to Truf for creating and providing his Verbatim macros, upon which many of these macros and sub procedures are built upon! Macros in the Debate Utility Booster Suite built upon macros or code that Truf wrote have more specific attribution in their header(s). You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
 
@@ -130,8 +130,8 @@ Sub StandardizeHighlightingWithExceptions()
 	Application.DisplayAlerts = True
 End Sub
 
-' ---Argument Numberer v1.0.1---
-' Updated on 2024-08-21.
+' ---Argument Numberer v1.0.2---
+' Updated on 2024-09-03.
 ' https://github.com/KSXia/Verbatim-Argument-Numberer/
 ' Based on Verbatim 6.0.0's "AutoNumberTags" function.
 Sub NumberArguments()
@@ -166,7 +166,7 @@ Sub NumberArguments()
 	
 	' ---PROCESS TO NUMBER ARGUMENTS---
 	' Loop through each paragraph and insert the number if the numbering template is present at the start of the paragraph.
-	' Reset the numbering on any specified larger heading
+	' Reset the numbering on any specified larger heading.
 	For Each p In ActiveDocument.Paragraphs
 		Select Case p.OutlineLevel
 			Case Is = 1

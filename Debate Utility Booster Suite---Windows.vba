@@ -208,8 +208,8 @@ Sub NumberArguments()
 	' End of code based on Verbatim 6.0.0's functions.
 End Sub
 
-' ---Read Doc Creator v2.1.9---
-' Updated on 2024-09-19.
+' ---Read Doc Creator v2.2.1---
+' Updated on 2024-09-20.
 ' This macro consists of 6 sub procedures.
 ' https://github.com/KSXia/Verbatim-Read-Doc-Creator
 ' Thanks to Truf for creating and providing the original code for activating invisibility mode! You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
@@ -532,6 +532,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 	With TargetDoc.Content.Find
 		.ClearFormatting
 		.Text = "^p ^p"
+		.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 		.Replacement.ClearFormatting
 		.Replacement.Text = ""
 		.Replacement.Highlight = False
@@ -543,6 +544,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 		.ClearFormatting
 		.MatchWildcards = True
 		.Text = "( ){2,}"
+		.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 		.Highlight = False
 		.Replacement.ClearFormatting
 		.Replacement.Text = " "
@@ -554,6 +556,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 		.ClearFormatting
 		.MatchWildcards = False
 		.Text = "^p "
+		.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 		.Replacement.ClearFormatting
 		.Replacement.Text = "^p"
 		.Execute Replace:=wdReplaceAll
@@ -564,6 +567,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 		.ClearFormatting
 		.MatchWildcards = True
 		.Text = "^13{2,}"
+		.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 		.Replacement.ClearFormatting
 		.Replacement.Text = "^p"
 		.Execute Replace:=wdReplaceAll
@@ -615,6 +619,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 					.ClearFormatting
 					.MatchWildcards = True
 					.Text = "( ){2,}"
+					.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 					.Highlight = False
 					.Replacement.ClearFormatting
 					.Replacement.Text = " "

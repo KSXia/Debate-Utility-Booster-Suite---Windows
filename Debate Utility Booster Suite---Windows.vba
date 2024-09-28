@@ -1,4 +1,4 @@
-' ===Debate Utility Booster Suite - Windows - v1.1.3==
+' ===Debate Utility Booster Suite - Windows - v1.2.0==
 ' Updated on 2024-09-27.
 ' https://github.com/KSXia/Debate-Utility-Booster-Suite---Windows
 ' Thanks to Truf for creating and providing his Verbatim macros, upon which many of these macros and sub procedures are built upon! Macros in the Debate Utility Booster Suite built upon macros or code that Truf wrote have more specific attribution in their header(s). You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
@@ -208,8 +208,8 @@ Sub NumberArguments()
 	' End of code based on Verbatim 6.0.0's functions.
 End Sub
 
-' ---Read Doc Creator v2.0.7---
-' Updated on 2024-09-08.
+' ---Read Doc Creator v2.1.9---
+' Updated on 2024-09-19.
 ' This macro consists of 6 sub procedures.
 ' https://github.com/KSXia/Verbatim-Read-Doc-Creator
 ' Thanks to Truf for creating and providing the original code for activating invisibility mode! You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
@@ -239,7 +239,7 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 	AutomaticallySaveReadDoc = True
 	
 	' If this macro is set to automatically save the read doc and AutomaticallyCloseSavedReadDoc is set to True, the read doc will automatically be closed after it is saved.
-	AutomaticallyCloseSavedReadDoc = True
+	AutomaticallyCloseSavedReadDoc = False
 	
 	' <<SET THE STYLES TO DELETE HERE!>>
 	' Add the names of styles that you want to delete to the list in the StylesToDelete array. Make sure that the name of the style is in quotation marks and that each term is separated by commas!
@@ -290,7 +290,7 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 	
 	' ---CHECK VALIDITY OF USER CONFIGURATION---
 	' Check if there is either a prefix or suffix for the read doc name.
-	If ReadDocNamePrefix = "" And ReadDocNameSuffix = "" Then
+	If AutomaticallySaveReadDoc = True And ReadDocNamePrefix = "" And ReadDocNameSuffix = "" Then
 		' If there is neither a prefix nor suffix for the read doc name:
 		MsgBox "You have not set a suffix or prefix to add to the read doc name. Please set one in the macro settings and try again.", Title:="Error in Creating Read Doc"
 		Exit Sub
@@ -396,7 +396,7 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 	
 	If DeleteLinkedCharacterStyles = True Then
 		Dim CurrentLinkedCharacterStyleToDeleteIndex As Integer
-		For CurrentLinkedCharacterStyleToDeleteIndex = 0 to GreatestLinkedCharacterStyleIndex Step 1
+		For CurrentLinkedCharacterStyleToDeleteIndex = 0 To GreatestLinkedCharacterStyleIndex Step 1
 			Dim LinkedCharacterStyleToDelete As Style
 			
 			' Specify the linked style to delete the character variants of.
@@ -496,6 +496,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 		.ClearFormatting
 		.Text = ""
 		.Style = "Normal"
+		.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 		.Highlight = False
 		.Font.Bold = False
 		.Replacement.ClearFormatting
@@ -508,6 +509,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 		.ClearFormatting
 		.Text = ""
 		.Style = "Underline"
+		.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 		.Highlight = False
 		.Replacement.ClearFormatting
 		.Replacement.Text = " "
@@ -519,6 +521,7 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 		.ClearFormatting
 		.Text = ""
 		.Style = "Emphasis"
+		.ParagraphFormat.OutlineLevel = wdOutlineLevelBodyText
 		.Highlight = False
 		.Replacement.ClearFormatting
 		.Replacement.Text = " "
@@ -556,24 +559,23 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Remove consecutive paragraph marks in non-highlighted text.
+	' Remove empty paragraphs by replacing consecutive paragraph marks with a single paragraph mark.
 	With TargetDoc.Content.Find
 		.ClearFormatting
 		.MatchWildcards = True
-		.Text = "^13{1,}"
+		.Text = "^13{2,}"
 		.Replacement.ClearFormatting
 		.Replacement.Text = "^p"
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	If Not UseFastMode Then
+	If Not UseFastMode = True Then
 		Dim CharacterIndexToInspect As Long
 		
 		' Remove line breaks surrounded on both sides by highlighted text.
 		Dim TargetDocParagraph As Paragraph
-		Dim RangeOfParagraphToInspect As Range
-		
 		For Each TargetDocParagraph In TargetDoc.Paragraphs
+			Dim RangeOfParagraphToInspect As Range
 			Set RangeOfParagraphToInspect = TargetDocParagraph.Range
 			RangeOfParagraphToInspect.MoveEnd wdCharacter, -1 ' Ignore the paragraph mark.
 			
@@ -604,9 +606,20 @@ Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Bool
 			End If
 			
 			' If both paragraphs contain highlighted text, join them.
-			If DoesParagraphContainHighlighting And DoesFollowingParagraphContainHighlighting Then
+			If DoesParagraphContainHighlighting = True And DoesFollowingParagraphContainHighlighting = True Then
 				RangeOfParagraphToInspect.InsertAfter " " ' Insert a space after the current paragraph.
 				TargetDocParagraph.Range.Characters.Last.Delete ' Delete the paragraph mark.
+				
+				' Remove any consecutive non-highlighted spaces the inserted space may have formed.
+				With TargetDoc.Content.Find
+					.ClearFormatting
+					.MatchWildcards = True
+					.Text = "( ){2,}"
+					.Highlight = False
+					.Replacement.ClearFormatting
+					.Replacement.Text = " "
+					.Execute Replace:=wdReplaceAll
+				End With
 			End If
 		Next TargetDocParagraph
 	End If
@@ -672,8 +685,9 @@ Sub DeleteForReferenceCardHighlighting(TargetDoc As Document, ForReferenceHighli
 		Case Is = "None"
 			Exit Sub
 		
-		' The highlighting color name is not a name of any of Word's highlighting colors:
+		' Other cases:
 		Case Else
+			' If the highlighting color name is not a name of any of Word's highlighting colors:
 			' ForReferenceHighlightingColorEnum = wdNoHighlight
 			Exit Sub
 	End Select

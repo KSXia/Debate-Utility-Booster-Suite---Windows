@@ -208,8 +208,8 @@ Sub NumberArguments()
 	' End of code based on Verbatim 6.0.0's functions.
 End Sub
 
-' ---Read Doc Creator v2.0.0---
-' Updated on 2024-08-23.
+' ---Read Doc Creator v2.0.7---
+' Updated on 2024-09-08.
 ' This macro consists of 6 sub procedures.
 ' https://github.com/KSXia/Verbatim-Read-Doc-Creator
 ' Thanks to Truf for creating and providing the original code for activating invisibility mode! You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
@@ -289,7 +289,7 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 	ReadDocNameSuffix = " [R]"
 	
 	' ---CHECK VALIDITY OF USER CONFIGURATION---
-	' Check if there is either a prefix or suffix for the read doc name
+	' Check if there is either a prefix or suffix for the read doc name.
 	If ReadDocNamePrefix = "" And ReadDocNameSuffix = "" Then
 		' If there is neither a prefix nor suffix for the read doc name:
 		MsgBox "You have not set a suffix or prefix to add to the read doc name. Please set one in the macro settings and try again.", Title:="Error in Creating Read Doc"
@@ -298,36 +298,36 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 	
 	' ---INITIAL VARIABLE SETUP---
 	Dim OriginalDoc As Document
-	' Assign the original document to a variable
+	' Assign the original document to a variable.
 	Set OriginalDoc = ActiveDocument
 	
-	' Check if the original document has previously been saved
+	' Check if the original document has previously been saved.
 	If OriginalDoc.Path = "" Then
 		' If the original document has not been previously saved:
 		MsgBox "The current document must be saved at least once. Please save the current document and try again.", Title:="Error in Creating Read Doc"
 		Exit Sub
 	End If
 	
-	' Assign the original document name to a variable
+	' Assign the original document name to a variable.
 	Dim OriginalDocName As String
 	OriginalDocName = OriginalDoc.Name
 	
 	' ---INITIAL GENERAL SETUP---
-	' Disable screen updating for faster execution
+	' Disable screen updating for faster execution.
 	Application.ScreenUpdating = False
 	Application.DisplayAlerts = False
 	
 	' ---VARIABLE SETUP---
 	Dim ReadDoc As Document
 	
-	' If the doc has been previously saved, create a copy of it to be the read doc
+	' If the doc has been previously saved, create a copy of it to be the read doc.
 	Set ReadDoc = Documents.Add(OriginalDoc.FullName)
 	
 	Dim GreatestStyleIndex As Integer
 	GreatestStyleIndex = UBound(StylesToDelete) - LBound(StylesToDelete)
 	
 	' ---STYLE DELETION SETUP---
-	' Disable error prompts in case one of the styles set to be deleted isn't present
+	' Disable error prompts in case one of the styles set to be deleted isn't present.
 	On Error Resume Next
 	
 	' ---PRE-PROCESSING FOR STYLE DELETION---
@@ -354,13 +354,13 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 				.Replacement.Text = "^p"
 				.Replacement.Style = "Tag Char"
 				.Format = True
-				' Ensure various checks are disabled to have the search properly function
+				' Ensure various checks are disabled to have the search properly function.
 				.MatchCase = False
 				.MatchWholeWord = False
 				.MatchWildcards = False
 				.MatchSoundsLike = False
 				.MatchAllWordForms = False
-				' Delete all text with the style to delete
+				' Delete all text with the style to delete.
 				.Execute Replace:=wdReplaceAll, Forward:=True, Wrap:=wdFindContinue
 			End With
 		Next CurrentLinkedCharacterStyleToProcessIndex
@@ -372,23 +372,23 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 		For CurrentStyleToDeleteIndex = 0 To GreatestStyleIndex Step 1
 			Dim StyleToDelete As Style
 			
-		' Specify the style to be deleted and delete it
+		' Specify the style to be deleted and delete it.
 			Set StyleToDelete = ReadDoc.Styles(StylesToDelete(CurrentStyleToDeleteIndex))
 			
-			' Use Find and Replace to remove text with the specified style and delete it
+			' Use Find and Replace to remove text with the specified style and delete it.
 			With ReadDoc.Content.Find
 				.ClearFormatting
 				.Style = StyleToDelete
 				.Replacement.ClearFormatting
 				.Replacement.Text = ""
 				.Format = True
-				' Disable checks in the find process for optimization
+				' Disable checks in the find process for optimization.
 				.MatchCase = False
 				.MatchWholeWord = False
 				.MatchWildcards = False
 				.MatchSoundsLike = False
 				.MatchAllWordForms = False
-				' Delete all text with the style to delete
+				' Delete all text with the style to delete.
 				.Execute Replace:=wdReplaceAll, Forward:=True, Wrap:=wdFindContinue
 			End With
 		Next CurrentStyleToDeleteIndex
@@ -399,30 +399,30 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 		For CurrentLinkedCharacterStyleToDeleteIndex = 0 to GreatestLinkedCharacterStyleIndex Step 1
 			Dim LinkedCharacterStyleToDelete As Style
 			
-			' Specify the linked style to delete the character variants of
+			' Specify the linked style to delete the character variants of.
 			Set LinkedCharacterStyleToDelete = ReadDoc.Styles(LinkedCharacterStylesToDelete(CurrentLinkedCharacterStyleToDeleteIndex))
 			
-			' Use Find and Replace to remove text with the character variants of the specified linked style and delete it
+			' Use Find and Replace to remove text with the character variants of the specified linked style and delete it.
 			With ReadDoc.Content.Find
 				.ClearFormatting
 				.Style = LinkedCharacterStyleToDelete
 				.Replacement.ClearFormatting
 				.Replacement.Text = ""
 				.Format = True
-				' Disable checks in the find process for optimization
+				' Disable checks in the find process for optimization.
 				.MatchCase = False
 				.MatchWholeWord = False
 				.MatchWildcards = False
 				.MatchSoundsLike = False
 				.MatchAllWordForms = False
-				' Delete all text with the style to delete
+				' Delete all text with the style to delete.
 				.Execute Replace:=wdReplaceAll, Forward:=True, Wrap:=wdFindContinue
 			End With
 		Next CurrentLinkedCharacterStyleToDeleteIndex
 	End If
 	
 	' ---POST STYLE DELETION PROCESSES---
-	' Re-enable error prompts
+	' Re-enable error prompts.
 	On Error GoTo 0
 	
 	' ---DELETE HIGHLIGHTED WORDS IN "For Reference" CARDS---
@@ -443,11 +443,11 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 	If CopyFormattedTitle = True Then
 		Dim ClipboardText As DataObject
 		
-		' Set a variable to be the name of the read doc
+		' Set a variable to be the name of the read doc.
 		Dim ReadDocName As String
 		ReadDocName = ReadDocNamePrefix & Left(OriginalDocName, Len(OriginalDocName) - 5) & ReadDocNameSuffix
 		
-		' Put the formatted name of the read doc into the clipboard
+		' Put the formatted name of the read doc into the clipboard.
 		Set ClipboardText = New DataObject
 		ClipboardText.SetText ReadDocName
 		ClipboardText.PutInClipboard
@@ -466,7 +466,7 @@ Sub CreateReadDoc(EnableInvisibilityMode As Boolean, EnableFastInvisibilityMode 
 	End If
 	
 	' ---FINAL PROCESSES---
-	' Re-enable screen updating and alerts
+	' Re-enable screen updating and alerts.
 	Application.ScreenUpdating = True
 	Application.DisplayAlerts = True
 End Sub
@@ -474,210 +474,230 @@ End Sub
 ' Sub procedure 2 of 6: Invisibility Mode Enabler
 ' Thanks to Truf for creating and providing the original code for activating invisibility mode! This sub procedure is based on Truf's "InvisibilityOn" and "InvisibilityOnFast" sub procedures. You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
 Sub EnableDestructiveInvisibilityMode(TargetDoc As Document, UseFastMode As Boolean)
-	' Move the cursor to the beginning of the document
+	' Move the cursor to the beginning of the document.
 	TargetDoc.Content.Select
 	Selection.HomeKey Unit:=wdStory
 	
-	' Replace all paragraph marks with highlighted and bolded paragraph marks
+	' Replace all paragraph marks with highlighted and bolded paragraph marks.
 	With TargetDoc.Content.Find
 		.ClearFormatting
-		.Replacement.ClearFormatting
+		.MatchWildcards = False
 		.Text = "^p"
+		.Replacement.ClearFormatting
 		.Replacement.Text = "^p"
 		.Replacement.Style = "Underline"
-		.Replacement.Highlight = True
 		.Replacement.Font.Bold = True
-		.MatchWildcards = False
+		.Replacement.Highlight = True
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Delete non-highlighted "Normal" text
+	' Delete non-highlighted "Normal" text.
 	With TargetDoc.Content.Find
 		.ClearFormatting
+		.Text = ""
 		.Style = "Normal"
 		.Highlight = False
 		.Font.Bold = False
 		.Replacement.ClearFormatting
-		.Text = ""
 		.Replacement.Text = " "
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Delete non-highlighted "Underline" text
+	' Delete non-highlighted "Underline" text.
 	With TargetDoc.Content.Find
 		.ClearFormatting
+		.Text = ""
 		.Style = "Underline"
 		.Highlight = False
 		.Replacement.ClearFormatting
-		.Text = ""
 		.Replacement.Text = " "
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Delete non-highlighted "Emphasis" text
+	' Delete non-highlighted "Emphasis" text.
 	With TargetDoc.Content.Find
 		.ClearFormatting
+		.Text = ""
 		.Style = "Emphasis"
 		.Highlight = False
 		.Replacement.ClearFormatting
-		.Text = ""
 		.Replacement.Text = " "
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Remove extra spaces between paragraph marks
+	' Remove extra spaces between paragraph marks.
 	With TargetDoc.Content.Find
 		.ClearFormatting
-		.Replacement.ClearFormatting
 		.Text = "^p ^p"
+		.Replacement.ClearFormatting
 		.Replacement.Text = ""
 		.Replacement.Highlight = False
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Remove consecutive spaces in non-highlighted text
+	' Remove consecutive spaces in non-highlighted text.
 	With TargetDoc.Content.Find
 		.ClearFormatting
-		.Replacement.ClearFormatting
+		.MatchWildcards = True
 		.Text = "( ){2,}"
 		.Highlight = False
-		.MatchWildcards = True
+		.Replacement.ClearFormatting
 		.Replacement.Text = " "
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Remove spaces at the beginning of paragraphs
+	' Remove spaces at the beginning of paragraphs.
 	With TargetDoc.Content.Find
 		.ClearFormatting
-		.Replacement.ClearFormatting
-		.Text = "^p "
-		.Replacement.Text = "^p"
 		.MatchWildcards = False
+		.Text = "^p "
+		.Replacement.ClearFormatting
+		.Replacement.Text = "^p"
 		.Execute Replace:=wdReplaceAll
 	End With
 	
-	' Remove consecutive paragraph marks in non-highlighted text
+	' Remove consecutive paragraph marks in non-highlighted text.
 	With TargetDoc.Content.Find
 		.ClearFormatting
-		.Replacement.ClearFormatting
-		.Text = "^13{1,}"
-		.Replacement.Text = "^p"
 		.MatchWildcards = True
+		.Text = "^13{1,}"
+		.Replacement.ClearFormatting
+		.Replacement.Text = "^p"
 		.Execute Replace:=wdReplaceAll
 	End With
 	
 	If Not UseFastMode Then
-		Dim i As Long
+		Dim CharacterIndexToInspect As Long
 		
-		' Remove line breaks surrounded on both sides by highlighted text
-		Dim para As Paragraph
-		Dim rng As Range
-		Dim highlighted As Boolean
+		' Remove line breaks surrounded on both sides by highlighted text.
+		Dim TargetDocParagraph As Paragraph
+		Dim RangeOfParagraphToInspect As Range
 		
-		For Each para In TargetDoc.Paragraphs
-			Set rng = para.Range
-			rng.MoveEnd wdCharacter, -1 ' Ignore the paragraph mark
+		For Each TargetDocParagraph In TargetDoc.Paragraphs
+			Set RangeOfParagraphToInspect = TargetDocParagraph.Range
+			RangeOfParagraphToInspect.MoveEnd wdCharacter, -1 ' Ignore the paragraph mark.
 			
-			' Check if the current paragraph contains highlighted text
-			highlighted = False
-			For i = 1 To rng.Characters.Count
-				If rng.Characters(i).HighlightColorIndex <> wdNoHighlight Then
-					highlighted = True
+			' Check if the current paragraph contains highlighted text.
+			Dim DoesParagraphContainHighlighting As Boolean
+			DoesParagraphContainHighlighting = False
+			Dim LastCharacterIndexToInspect As Long
+			LastCharacterIndexToInspect = RangeOfParagraphToInspect.Characters.Count
+			For CharacterIndexToInspect = 1 To LastCharacterIndexToInspect
+				If RangeOfParagraphToInspect.Characters(CharacterIndexToInspect).HighlightColorIndex <> wdNoHighlight Then
+					DoesParagraphContainHighlighting = True
 					Exit For
 				End If
-			Next i
+			Next CharacterIndexToInspect
 			
-			' Check if the next paragraph exists and contains highlighted text
-			Dim nextHighlighted As Boolean
-			nextHighlighted = False
-			If Not para.Next Is Nothing Then
-				For i = 1 To para.Next.Range.Characters.Count - 1 ' Ignore the paragraph mark
-					If para.Next.Range.Characters(i).HighlightColorIndex <> wdNoHighlight Then
-						nextHighlighted = True
+			' Check if the next paragraph exists and contains highlighted text.
+			Dim DoesFollowingParagraphContainHighlighting As Boolean
+			DoesFollowingParagraphContainHighlighting = False
+			If Not TargetDocParagraph.Next Is Nothing Then
+				Dim LastCharacterIndexInNextParagraphToInspect As Long
+				LastCharacterIndexInNextParagraphToInspect = TargetDocParagraph.Next.Range.Characters.Count - 1 ' Ignore the paragraph mark.
+				For CharacterIndexToInspect = 1 To LastCharacterIndexInNextParagraphToInspect
+					If TargetDocParagraph.Next.Range.Characters(CharacterIndexToInspect).HighlightColorIndex <> wdNoHighlight Then
+						DoesFollowingParagraphContainHighlighting = True
 						Exit For
 					End If
-				Next i
+				Next CharacterIndexToInspect
 			End If
 			
-			' If both paragraphs contain highlighted text, join them
-			If highlighted And nextHighlighted Then
-				rng.InsertAfter " " ' Insert a space after the current paragraph
-				para.Range.Characters.Last.Delete ' Delete the paragraph mark
+			' If both paragraphs contain highlighted text, join them.
+			If DoesParagraphContainHighlighting And DoesFollowingParagraphContainHighlighting Then
+				RangeOfParagraphToInspect.InsertAfter " " ' Insert a space after the current paragraph.
+				TargetDocParagraph.Range.Characters.Last.Delete ' Delete the paragraph mark.
 			End If
-		Next para
+		Next TargetDocParagraph
 	End If
 	
-	' Clean up and suppress errors
+	' Clean up modified find and replace settings.
 	TargetDoc.Content.Find.ClearFormatting
 	TargetDoc.Content.Find.MatchWildcards = False
 	TargetDoc.Content.Find.Replacement.ClearFormatting
+	
+	' Suppress grammar check and spell check.
 	TargetDoc.ShowGrammaticalErrors = False
 	TargetDoc.ShowSpellingErrors = False
 End Sub
 
 ' Sub procedure 3 of 6: Delete Highlighting in "For Reference" Cards
-Sub DeleteForReferenceCardHighlighting(Doc As Document, ForReferenceHighlightingColor As String)
+Sub DeleteForReferenceCardHighlighting(TargetDoc As Document, ForReferenceHighlightingColor As String)
 	Dim ForReferenceHighlightingColorEnum As Long
-	' This code for converting highlighting color to enum is from Verbatim 6.0.0's "Standardize Highlighting With Exception" functon
+	' The following code for converting highlighting color name to enum is a modified version of Verbatim 6.0.0's "Standardize Highlighting With Exception" functon.
 	Select Case ForReferenceHighlightingColor
-		Case Is = "None"
-			ForReferenceHighlightingColorEnum = wdNoHighlight
-		Case Is = "Black"
-			ForReferenceHighlightingColorEnum = wdBlack
-		Case Is = "Blue"
-			ForReferenceHighlightingColorEnum = wdBlue
+		' Common highlighting colors:
+		Case Is = "Turquoise"
+			ForReferenceHighlightingColorEnum = wdTurquoise
 		Case Is = "Bright Green"
 			ForReferenceHighlightingColorEnum = wdBrightGreen
-		Case Is = "Dark Blue"
-			ForReferenceHighlightingColorEnum = wdDarkBlue
-		Case Is = "Dark Red"
-			ForReferenceHighlightingColorEnum = wdDarkRed
-		Case Is = "Dark Yellow"
-			ForReferenceHighlightingColorEnum = wdDarkYellow
-		Case Is = "Light Gray"
-			ForReferenceHighlightingColorEnum = wdGray25
-		Case Is = "Dark Gray"
-			ForReferenceHighlightingColorEnum = wdGray50
-		Case Is = "Green"
-			ForReferenceHighlightingColorEnum = wdGreen
+		Case Is = "Yellow"
+			ForReferenceHighlightingColorEnum = wdYellow
+		
+		' Common rehighlighting colors:
 		Case Is = "Pink"
 			ForReferenceHighlightingColorEnum = wdPink
 		Case Is = "Red"
 			ForReferenceHighlightingColorEnum = wdRed
+		
+		' Common "For Reference" highlighting colors:
+		Case Is = "Light Gray"
+			ForReferenceHighlightingColorEnum = wdGray25
+		Case Is = "Dark Gray"
+			ForReferenceHighlightingColorEnum = wdGray50
+		
+		' Other high-contrast highlighting color(s):
+		Case Is = "Dark Yellow"
+			ForReferenceHighlightingColorEnum = wdDarkYellow
+		
+		' Other highlighting colors:
+		Case Is = "Blue"
+			ForReferenceHighlightingColorEnum = wdBlue
+		Case Is = "Dark Blue"
+			ForReferenceHighlightingColorEnum = wdDarkBlue
 		Case Is = "Teal"
 			ForReferenceHighlightingColorEnum = wdTeal
-		Case Is = "Turquoise"
-			ForReferenceHighlightingColorEnum = wdTurquoise
+		Case Is = "Green"
+			ForReferenceHighlightingColorEnum = wdGreen
+		Case Is = "Dark Red"
+			ForReferenceHighlightingColorEnum = wdDarkRed
 		Case Is = "Violet"
 			ForReferenceHighlightingColorEnum = wdViolet
+		Case Is = "Black"
+			ForReferenceHighlightingColorEnum = wdBlack
 		Case Is = "White"
 			ForReferenceHighlightingColorEnum = wdWhite
-		Case Is = "Yellow"
-			ForReferenceHighlightingColorEnum = wdYellow
+		
+		' No highlighting color:
+		Case Is = "None"
+			Exit Sub
+		
+		' The highlighting color name is not a name of any of Word's highlighting colors:
 		Case Else
-			ForReferenceHighlightingColorEnum = wdNoHighlight
+			' ForReferenceHighlightingColorEnum = wdNoHighlight
+			Exit Sub
 	End Select
-	' End of code based on Verbatim 6.0.0 functions
+	' End of code based on Verbatim 6.0.0's functions.
 	
-	With Doc.Content
+	With TargetDoc.Content
 		With .Find
 			.ClearFormatting
-			.Highlight = True
 			.Text = ""
+			.Highlight = True
 			.Replacement.ClearFormatting
 			.Replacement.Text = ""
 			.Format = True
-			' Disable checks in the find process for optimization
+			' Disable checks in the find process for optimization.
 			.MatchCase = False
 			.MatchWholeWord = False
 			.MatchWildcards = False
 			.MatchSoundsLike = False
 			.MatchAllWordForms = False
-			' Modify the search process settings
+			' Modify the search process settings.
 			.Forward = True
 			.Wrap = wdFindStop
 			End With
-			' Delete all text with the "For Reference" highlighting color
+			' Delete all text with the "For Reference" highlighting color.
 			Do While .Find.Execute = True
 				If .HighlightColorIndex = ForReferenceHighlightingColorEnum Then .Delete
 			Loop

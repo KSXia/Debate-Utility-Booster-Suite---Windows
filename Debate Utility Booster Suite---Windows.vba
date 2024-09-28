@@ -1,4 +1,4 @@
-' ===Debate Utility Booster Suite - Windows - v1.2.0==
+' ===Debate Utility Booster Suite - Windows - v1.3.0==
 ' Updated on 2024-09-27.
 ' https://github.com/KSXia/Debate-Utility-Booster-Suite---Windows
 ' Thanks to Truf for creating and providing his Verbatim macros, upon which many of these macros and sub procedures are built upon! Macros in the Debate Utility Booster Suite built upon macros or code that Truf wrote have more specific attribution in their header(s). You can find Truf's macros on his website at https://debate-decoded.ghost.io/leveling-up-verbatim/
